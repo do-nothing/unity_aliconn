@@ -17,7 +17,7 @@ public class AliApiTest : MonoBehaviour {
     void Start()
     {
         client = AliApiClient.getAliApiClient("LTAIRW2cXPNzAWus", "WT2zYhVbIpbv7HQfk9QVYYrK28eHjg");
-        request = AliApiClient.getRequest("r7gAvsuXY2Y", "MonitorTools", "update");
+        request = AliApiClient.getRequest("vvepFlt7L0W", "MonitorTools", "test");
     }
 
     void OnGUI()
