@@ -19,7 +19,7 @@
 using System;
 using System.Globalization;
 using System.Text;
-using System.Web;
+//using System.Web;
 using UnityEngine;
 
 namespace Aliyun.Acs.Core.Auth
