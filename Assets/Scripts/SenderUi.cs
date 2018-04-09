@@ -21,9 +21,12 @@ public class SenderUi : MonoBehaviour
 
     private DefaultAcsClient client;
 
+    private string defaultUpdate = "{\n\t\"position\":[46.34,-89.88, 0.86],\n\t\"eulerAngle\":[74.32,83.72,3.3],\n\t\"keypadIds\":[0],\n\t\"remaining\":0.94\n}";
+    private string defaultGet = "{\n\t\"stop\":0,\n\t\"insert\":\"0101\",\n\t\"play\":[\"0102\",\"0103\"]\n}";
+
     void Start()
     {
-        inputField.text = "{\n\t\"Position\":[46.34,-89.88, 0.86],\n\t\"EulerAngle\":[74.32,83.72,3.3],\n\t\"KeypadIds\":[0],\n\t\"Remaining\":0.94\n}";
+        inputField.text = defaultUpdate;
         client = AliApiClient.getAliApiClient("LTAIRW2cXPNzAWus", "WT2zYhVbIpbv7HQfk9QVYYrK28eHjg");
     }
 
@@ -55,8 +58,8 @@ public class SenderUi : MonoBehaviour
         text = text.Replace("\t", "");
         textField.text += "<color=blue>(" + count++ + ")"
             + "/" + lastDeviceName + "/" + lastTopic
-            +">>></color>" 
-            + text 
+            + ">>></color>"
+            + text
             + "\n";
 
         if (height > 1500)
@@ -64,6 +67,19 @@ public class SenderUi : MonoBehaviour
             int index = textField.text.IndexOf("\n") + 1;
             textField.text = textField.text.Remove(0, index);
             vScrollbar.value = 0;
+        }
+    }
+
+    public void OnDropdownChanged()
+    {
+        switch (topic.value)
+        {
+            case 0:
+                inputField.text = defaultUpdate;
+                break;
+            case 1:
+                inputField.text = defaultGet;
+                break;
         }
     }
 
