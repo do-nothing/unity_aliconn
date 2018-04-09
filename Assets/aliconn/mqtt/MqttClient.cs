@@ -64,6 +64,9 @@ namespace uPLibrary.Networking.M2Mqtt
         #endregion
 #endif
 
+        //for re_connect
+        public string productKey, deviceName, deviceSecret;
+
         /// <summary>
         /// Delagate that defines event handler for PUBLISH message received
         /// </summary>

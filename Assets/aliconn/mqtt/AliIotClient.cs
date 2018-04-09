@@ -14,6 +14,18 @@ namespace com.microwise.unity.aliconn
         public static MqttClient getAliIotClient(string productKey, string deviceName, string deviceSecret)
         {
             MqttClient client = new MqttClient(productKey + ".iot-as-mqtt.cn-shanghai.aliyuncs.com", 1883, false, null);
+            client.MqttMsgDisconnected += client_MqttMsgDisconnected;
+
+            client_connect(productKey, deviceName, deviceSecret, client);
+
+            return client;
+        }
+
+        private static void client_connect(string productKey, string deviceName, string deviceSecret, MqttClient client)
+        {
+            client.productKey = productKey;
+            client.deviceName = deviceName;
+            client.deviceSecret = deviceSecret;
 
             string clientId = Guid.NewGuid().ToString();
             string timestamp = GetTimeStamp();
@@ -25,14 +37,20 @@ namespace com.microwise.unity.aliconn
             byte b = client.Connect(clientId, mqttUsername, mqttPassword);
             if (b == 0)
             {
-                Debug.Log("/"+productKey+"/"+deviceName+" is connected!");
+                Debug.Log("/" + productKey + "/" + deviceName + " is connected!");
             }
             else
             {
                 Debug.Log("/" + productKey + "/" + deviceName + " connects failed!");
             }
+        }
 
-            return client;
+        private static void client_MqttMsgDisconnected(object sender, EventArgs e)
+        {
+            Debug.Log("The client has disconnected!");
+            Debug.Log("re_connecting...");
+            MqttClient client = (MqttClient)sender;
+            client_connect(client.productKey, client.deviceName, client.deviceSecret, client);
         }
 
         private static string HMACSHA1Encrypt(string EncryptText, string EncryptKey)
