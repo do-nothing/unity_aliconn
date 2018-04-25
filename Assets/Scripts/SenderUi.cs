@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using LitJson;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Aliyun.Acs.Core;
 using com.microwise.unity.aliconn;
 using Aliyun.Acs.Iot.Model.V20170420;
 using Aliyun.Acs.Core.Exceptions;
+using System;
 
 public class SenderUi : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class SenderUi : MonoBehaviour
 
     private DefaultAcsClient client;
 
-    private string defaultUpdate = "{\n\t\"position\":[46.34,-89.88, 0.86],\n\t\"eulerAngle\":[74.32,83.72,3.3],\n\t\"keypadIds\":[0],\n\t\"remaining\":0.94\n}";
+    private string defaultUpdate = "{\n\t\"areaName\":\"microwise_404\",\n\t\"position\":[46.34,-89.88, 0.86],\n\t\"eulerAngle\":[74.32,83.72,3.3],\n\t\"keypadIds\":[0],\n\t\"remaining\":0.94\n}";
     private string defaultGet = "{\n\t\"stop\":0,\n\t\"insert\":\"0101\",\n\t\"play\":[\"0102\",\"0103\"]\n}";
 
     void Start()
@@ -58,15 +60,34 @@ public class SenderUi : MonoBehaviour
         text = text.Replace("\t", "");
         textField.text += "<color=blue>(" + count++ + ")"
             + "/" + lastDeviceName + "/" + lastTopic
-            + ">>></color>"
-            + text
-            + "\n";
+            + ">>></color>";
+        if (isJson(text))
+        {
+            textField.text += text + "\n";
+        }
+        else
+        {
+            textField.text += "<color=red>" + text + "</color>\n";
+        }
+            
 
         if (height > 1500)
         {
             int index = textField.text.IndexOf("\n") + 1;
             textField.text = textField.text.Remove(0, index);
             vScrollbar.value = 0;
+        }
+    }
+
+    private bool isJson(string text)
+    {
+        try
+        {
+            JsonData json = JsonMapper.ToObject(text);
+            return true;
+        }catch(Exception e){
+            print(e.StackTrace);
+            return false;
         }
     }
 
