@@ -20,10 +20,16 @@ public class SenderUi : MonoBehaviour
     private Text textField;
     [SerializeField]
     private Scrollbar vScrollbar;
+    [SerializeField]
+    private GameObject positionPanel;
+    [SerializeField]
+    private GameObject sender;
+    [SerializeField]
+    private GameObject areaName;
 
     private DefaultAcsClient client;
 
-    private string defaultUpdate = "{\n\t\"areaName\":\"microwise_404\",\n\t\"position\":[46.34,-89.88, 0.86],\n\t\"eulerAngle\":[74.32,83.72,3.3],\n\t\"keypadIds\":[0],\n\t\"remaining\":0.94\n}";
+    private string defaultUpdate = "{\n\t\"areaName\":\"microwise_501\",\n\t\"position\":[46.34,-89.88, 0.86],\n\t\"eulerAngle\":[7432,8372,330],\n\t\"keypad\":{\"id\":0,\"cost\":2560},\n\t\"remaining\":94\n}";
     private string defaultGet = "{\n\t\"stop\":0,\n\t\"insert\":\"0101\",\n\t\"play\":[\"0102\",\"0103\"]\n}";
 
     void Start()
@@ -53,7 +59,17 @@ public class SenderUi : MonoBehaviour
     int count = 0;
     public void OnClickSender()
     {
-        string text = sendMessage(deviceName.text, topic.options[topic.value].text, inputField.text);
+        sendManual(deviceName.text, topic.options[topic.value].text, inputField.text);
+    }
+
+    private void sendAuto(string message)
+    {
+        sendManual(deviceName.text, "update", message);
+    }
+
+    private void sendManual(string deviceName, string topic, string message)
+    {
+        string text = sendMessage(deviceName, topic, message);
 
         text = text.Replace(" ", "");
         text = text.Replace("\n", "");
@@ -69,7 +85,7 @@ public class SenderUi : MonoBehaviour
         {
             textField.text += "<color=red>" + text + "</color>\n";
         }
-            
+
 
         if (height > 1500)
         {
@@ -96,11 +112,34 @@ public class SenderUi : MonoBehaviour
         switch (topic.value)
         {
             case 0:
+                showPositonPanel(false);
                 inputField.text = defaultUpdate;
                 break;
             case 1:
+                showPositonPanel(false);
                 inputField.text = defaultGet;
                 break;
+            case 2:
+                showPositonPanel(true);
+                break;
+        }
+    }
+
+    private void showPositonPanel(bool flag)
+    {
+        if (flag)
+        {
+            inputField.gameObject.SetActive(false);
+            positionPanel.SetActive(true);
+            sender.SetActive(false);
+            areaName.SetActive(true);
+        }
+        else
+        {
+            inputField.gameObject.SetActive(true);
+            positionPanel.SetActive(false);
+            sender.SetActive(true);
+            areaName.SetActive(false);
         }
     }
 

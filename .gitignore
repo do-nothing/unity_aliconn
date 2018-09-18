@@ -8,7 +8,7 @@
 
 /Library
 
-*.mp4.meta
+*.meta
 
 # ----[ Visual Studio / MonoDevelop generated ]------- #
 

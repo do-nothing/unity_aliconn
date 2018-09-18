@@ -16,9 +16,9 @@ public class MqttTest : MonoBehaviour
     void Start()
     {
         // create client instance 
-        client = AliIotClient.getAliIotClient("vvepFlt7L0W", "MonitorTools", "jiBQM0QGBtCFGBM3jziD73AfND4y6SW0");
+        client = AliIotClient.getAliIotClient("r7gAvsuXY2Y", "862285030043537", "CH6vtKZHNl1a0ixD3TO8jSNQS1UcFovm");
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
-        client.Subscribe(new string[] { "/vvepFlt7L0W/MonitorTools/test" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE });
+        client.Subscribe(new string[] { "/r7gAvsuXY2Y/862285030043537/get" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE });
     }
 
     private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
@@ -31,7 +31,7 @@ public class MqttTest : MonoBehaviour
         if (GUI.Button(new Rect(20, 40, 150, 20), "publish mqtt message"))
         {
             Debug.Log("publish message from mqtt:");
-            client.Publish("/vvepFlt7L0W/MonitorTools/test", System.Text.Encoding.UTF8.GetBytes("{\"volume\":30}"), MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE, true);
+            client.Publish("/r7gAvsuXY2Y/862285030043537/update", System.Text.Encoding.UTF8.GetBytes("{\"volume\":30}"), MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE, true);
         }
     }
 }
